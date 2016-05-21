@@ -68,7 +68,5 @@ int main() {
     // The 's' variable above should be printed first.
     cout << s << input_s << endl;
 
-    cin.get();
-
     return 0;
 }
