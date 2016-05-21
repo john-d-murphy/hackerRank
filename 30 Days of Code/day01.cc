@@ -49,23 +49,26 @@ int main() {
     string s = "HackerRank ";
     // Declare second integer, double, and String variables.
     int input_i;
-    int input_d;
+    double input_d;
     string input_s;
 
     // Read and save an integer, double, and String to your variables.
     cin >> input_i;
     cin >> input_d;
-    getline(cin,input_s);
+    getline(cin, input_s);
+    getline(cin, input_s);
 
     // Print the sum of both integer variables on a new line.
     cout << i + input_i << endl;
 
     // Print the sum of the double variables on a new line.
-    cout << d + input_d << endl;
+    printf("%.1f\n", d + input_d);
 
     // Concatenate and print the String variables on a new line
     // The 's' variable above should be printed first.
     cout << s << input_s << endl;
+
+    cin.get();
 
     return 0;
 }
