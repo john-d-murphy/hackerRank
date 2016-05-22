@@ -1,5 +1,9 @@
-
-
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
 /*
 A Discrete Mathematics professor has a class of N students.
