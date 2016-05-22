@@ -57,7 +57,9 @@ First you have to figure out how many multiples of three fit in the number of di
 difference of that multiple of three and the number of digits is a multiple of five, then you have
 a valid number. If you have a maximum multiple of three, that's your answer.
 
-The confusion is that the multiple of three needs to be printed out as a 5. 
+The confusion is that the multiple of three needs to be printed out as a 5.
+
+I've left the comments in so that it's possible to print out the states and see where the values end up.
 */
 
 int maxMultipleOfThree(int numberOfDigits) {
