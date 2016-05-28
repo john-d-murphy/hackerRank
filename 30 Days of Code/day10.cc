@@ -17,13 +17,13 @@ representation.
 
 Input Format
 
-A single integer, .
+A single integer, n.
 
 Constraints
 
 Output Format
 
-Print a single base- integer denoting the maximum number of consecutive 's in the binary representation of .
+Print a single base-2 integer denoting the maximum number of consecutive 1's in the binary representation of n.
 
 Sample Input 1
 5
