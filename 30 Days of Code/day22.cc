@@ -69,9 +69,10 @@ public:
   int getHeight(Node* root) {
     if (root == NULL) {
       return 0;
-    // For some reason a leaf node isn't
-    // included in the way we determine the height
-    // of our tree. 
+    /*
+    Based on the problem definition, a leaf Node
+    is not included in the height of the tree.
+    */
     } if ( root->left == NULL && root->right == NULL) {
       return 0;
     } else {
