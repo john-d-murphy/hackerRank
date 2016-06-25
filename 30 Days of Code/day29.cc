@@ -58,10 +58,10 @@ Sample Output
 0
 */
 
-int main(){
+int main() {
   int t;
   cin >> t;
-  for(int testCase = 0; testCase < t; testCase++){
+  for(int testCase = 0; testCase < t; testCase++) {
     int n;
     int k;
     cin >> n >> k;
