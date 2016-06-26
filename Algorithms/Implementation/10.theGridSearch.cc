@@ -97,101 +97,13 @@ YES
 NO
 */
 
-bool inBounds(int row, int column, int maxRow, int maxColumn) {
-  if (row < 0 || column < 0) {
-    return false;
-  } else if ( row >= maxRow || column >= maxColumn) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-char getCharacter(int row, int column, vector<string> grid) {
-  return grid[row].at(column);
-}
-
-bool compareGrid(vector<string> grid, vector<string> testGrid, int startRow, int startColumn) {
-  int gridRows = grid.size();
-  int gridColumns = grid[0].size();
-
-  int testGridRows = testGrid.size();
-  int testGridColumns = testGrid[0].size();
-
-  if (!inBounds(startRow+testGridRows-1,startColumn+testGridColumns-1,gridRows,gridColumns)) {
-    return false;
-  }
-
-  for (int testRow = 0; testRow < testGridRows ; testRow++) {
-    for (int testColumn = 0; testColumn < testGridColumns; testColumn++) {
-      char testGridChar = getCharacter(testRow,testColumn,testGrid);
-      char gridChar = getCharacter(testRow+startRow,testColumn+startColumn,grid);
-      if (testGridChar != gridChar) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-int main() {
-  int testCases;
-  cin >> testCases;
-  for(int i = 0; i < testCases; i++) {
-    // Get the grid
-    int rows;
-    int columns;
-    cin >> rows >> columns;
-    vector<string> grid(rows);
-    for(int j = 0; j < rows; j++){
-      cin >> grid[j];
-    }
-    // Get the grid to search for
-    int testRows;
-    int testColumns;
-    cin >> testRows >> testColumns;
-    vector<string> testGrid(testRows);
-    for(int j = 0; j < testRows; j++) {
-      cin >> testGrid[j];
-    }
-
-    // Get the first character in the test grid
-    char testCharacter = getCharacter(0,0,testGrid);
-    string match = "NO";
-
-    // Find this character in the grid
-    for (int row = 0 ; row < rows ; row++) {
-      for (int column = 0; column < columns; column++) {
-        char currentCharacter = getCharacter(row,column,grid);
-        if (currentCharacter == testCharacter && compareGrid(grid,testGrid,row,column)) {
-          match = "YES";
-          break;
-        }
-      }
-
-      // If we have a match, we don't need to keep going
-      if (match.compare("YES") == 0) {
-        break;
-      }
-    }
-    cout << match << endl;
-
-  }
-  return 0;
-}
-
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-using namespace std;
 
 
 bool inBounds(int row, int column, int maxRow, int maxColumn) {
+  //cout << "Testing: " << row << "," << column << ":" << maxRow << "," << maxColumn << endl;
   if (row < 0 || column < 0) {
     return false;
-  } else if ( row >= maxRow || column >= maxColumn) {
+  } else if ( row > maxRow || column > maxColumn) {
     return false;
   } else {
     return true;
@@ -210,62 +122,105 @@ bool compareGrid(vector<string> grid, vector<string> testGrid, int startRow, int
   int testGridRows = testGrid.size();
   int testGridColumns = testGrid[0].size();
 
-
+  /*
   cout << " Grid Rows: " << gridRows << " Grid Columns: " << gridColumns \
        << " Test Grid Rows: " << testGridRows << " Test Grid Columns " << testGridColumns \
        << " Start Rows: " << startRow << " Start Columns: " << startColumn << endl;
-
+  */
   if (!inBounds(startRow+testGridRows-1,startColumn+testGridColumns-1,gridRows,gridColumns)) {
+     cout << "Failed boundary " << endl;
      return false;
   }
 
-  //cout << "Boundary Test Passed" << endl;
-
   for (int i = 0; i < testGridRows ; i++) {
     string testString = testGrid[i];
-    string gridSubstring = grid[i].substr(startColumn-1,testString.size());
+    string gridSubstring = grid[i].substr(startColumn,testString.size());
+    cout << i << " " << testString << " " << testString.size() << " " << gridSubstring << endl;
 
-    cout << i << " " << testString << " " << gridSubstring << endl;
     if (testString.compare(gridSubstring) != 0)  {
         return false;
     }
-    /*for (int testColumn = 0; testColumn < testGridColumns; testColumn++) {
-      //cout << "Testing Char: " << testRow << "," << testColumn << endl;
-      char testGridChar = getCharacter(testRow,testColumn,testGrid);
-      char gridChar = getCharacter(testRow+startRow,testColumn+startColumn,grid);
-      if (testGridChar != gridChar) {
-        return false;
-      }
-    }*/
   }
   return true;
 }
 
 int main() {
+
   int testCases;
   cin >> testCases;
+
   for(int i = 0; i < testCases; i++) {
+
+    // Initialize result
+    string result = "NO";
+
+    // Regex Matches
+    smatch matches;
+    smatch innerMatches;
+
     // Get the grid
     int rows;
     int columns;
     cin >> rows >> columns;
     vector<string> grid(rows);
-    for(int j = 0; j < rows; j++) {
+    for(int j = 0; j < rows; j++){
       cin >> grid[j];
     }
+
     // Get the grid to search for
     int testRows;
     int testColumns;
     cin >> testRows >> testColumns;
     vector<string> testGrid(testRows);
+    vector<regex> testQueries(testRows);
     for(int j = 0; j < testRows; j++) {
-      cin >> testGrid[j];
+      string row;
+      cin >> row;
+      testGrid[j] = row;
+      testQueries[j] = (row);
+
     }
 
-    // Get the first character in the test grid
-    char testCharacter = getCharacter(0,0,testGrid);
-    string match = "NO";
 
+    // See if this matches any of the rows in the
+    // test grid
+    cout << "Querying:" << testGrid[0] << endl;
+    for(int row = 0; row < rows; row++) {
+        cout << grid[row] << " " << endl;
+        string rowRemainder = grid[row];
+        int matchPosition = 0;
+        // Let's find all of the matches for this string
+        while(regex_search(rowRemainder,matches,testQueries[0])) {
+            int currentPosition = matches.position() + matchPosition;
+            int numberOfMatches = 1;
+
+            // Now that we have a match, let's see if the next rows match.
+            // (We also don't want to go over the max number of rows, so we need to add that
+            // to the match criteria as well.)
+            for (int innerRow = 1 ; innerRow < testRows && row + innerRow < rows; innerRow++) {
+                string testString = grid[row + innerRow].substr(currentPosition);
+                if (regex_search(testString,innerMatches,testQueries[innerRow]) && innerMatches.position() == 0) {
+                    numberOfMatches++;
+                } else {
+                    break;
+                }
+            }
+            if (numberOfMatches == testRows) {
+               cout << "Match Found" << endl;
+               result = "YES";
+               break;
+            }
+            matchPosition = currentPosition;
+            rowRemainder = matches.suffix().str();
+        }
+        if (result.compare("YES") == 0) {
+            break;
+        }
+    }
+
+    cout << result << endl;
+
+    /*
     // Find this character in the grid
     for (int row = 0 ; row < rows ; row++) {
       for (int column = 0; column < columns; column++) {
@@ -282,7 +237,7 @@ int main() {
       }
     }
     cout << match << endl;
-
+    */
   }
   return 0;
 }
