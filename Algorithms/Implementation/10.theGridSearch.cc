@@ -97,53 +97,6 @@ YES
 NO
 */
 
-
-
-bool inBounds(int row, int column, int maxRow, int maxColumn) {
-  //cout << "Testing: " << row << "," << column << ":" << maxRow << "," << maxColumn << endl;
-  if (row < 0 || column < 0) {
-    return false;
-  } else if ( row > maxRow || column > maxColumn) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-char getCharacter(int row, int column, vector<string> grid) {
-  string characterRow = grid[row];
-  return characterRow.at(column);
-}
-
-bool compareGrid(vector<string> grid, vector<string> testGrid, int startRow, int startColumn) {
-  int gridRows = grid.size();
-  int gridColumns = grid[0].size();
-
-  int testGridRows = testGrid.size();
-  int testGridColumns = testGrid[0].size();
-
-  /*
-  cout << " Grid Rows: " << gridRows << " Grid Columns: " << gridColumns \
-       << " Test Grid Rows: " << testGridRows << " Test Grid Columns " << testGridColumns \
-       << " Start Rows: " << startRow << " Start Columns: " << startColumn << endl;
-  */
-  if (!inBounds(startRow+testGridRows-1,startColumn+testGridColumns-1,gridRows,gridColumns)) {
-     cout << "Failed boundary " << endl;
-     return false;
-  }
-
-  for (int i = 0; i < testGridRows ; i++) {
-    string testString = testGrid[i];
-    string gridSubstring = grid[i].substr(startColumn,testString.size());
-    cout << i << " " << testString << " " << testString.size() << " " << gridSubstring << endl;
-
-    if (testString.compare(gridSubstring) != 0)  {
-        return false;
-    }
-  }
-  return true;
-}
-
 int main() {
 
   int testCases;
@@ -157,6 +110,7 @@ int main() {
     // Regex Matches
     smatch matches;
     smatch innerMatches;
+    sregex_iterator end = sregex_iterator();
 
     // Get the grid
     int rows;
@@ -181,24 +135,23 @@ int main() {
 
     }
 
-
     // See if this matches any of the rows in the
     // test grid
-    cout << "Querying:" << testGrid[0] << endl;
-    for(int row = 0; row < rows; row++) {
-        cout << grid[row] << " " << endl;
-        string rowRemainder = grid[row];
+     for(int row = 0; row < rows; row++) {
+        string rowText = grid[row];
         int matchPosition = 0;
-        // Let's find all of the matches for this string
-        while(regex_search(rowRemainder,matches,testQueries[0])) {
-            int currentPosition = matches.position() + matchPosition;
+        cout << rowText << endl;
+        sregex_iterator begin = sregex_iterator(rowText.begin(), rowText.end(), testQueries[0]);
+        for (sregex_iterator i = begin; i != end; ++i) {
             int numberOfMatches = 1;
-
-            // Now that we have a match, let's see if the next rows match.
-            // (We also don't want to go over the max number of rows, so we need to add that
-            // to the match criteria as well.)
+            smatch match = *i;
+            //cout << match.position() << " " ;
+            string match_substr = rowText.substr(match.position());
+            string match_str = match.str();
+            //cout << match_substr << " " << match_str << '\n';
             for (int innerRow = 1 ; innerRow < testRows && row + innerRow < rows; innerRow++) {
-                string testString = grid[row + innerRow].substr(currentPosition);
+                string testString = grid[row + innerRow].substr(match.position());
+                cout << "Query: " << testGrid[innerRow] << " Test String: [" << testString << "]" << endl;
                 if (regex_search(testString,innerMatches,testQueries[innerRow]) && innerMatches.position() == 0) {
                     numberOfMatches++;
                 } else {
@@ -206,38 +159,94 @@ int main() {
                 }
             }
             if (numberOfMatches == testRows) {
-               cout << "Match Found" << endl;
                result = "YES";
                break;
             }
-            matchPosition = currentPosition;
-            rowRemainder = matches.suffix().str();
+        }
+
+        // Let's find all of the matches for this string
+
+        /*
+        while(regex_search(rowRemainder,matches,testQueries[0])) {
+
+            int numberOfMatches = 1;
+            int currentPosition = matchPosition + matches.prefix().length();
+            //cout << "Querying on: " << rowRemainder << endl;
+            //cout << "Current Position: " << currentPosition << endl;
+            // Now that we have a match, let's see if the next rows match.
+            // (We also don't want to go over the max number of rows, so we need to add that
+            // to the match criteria as well.)
+            for (int innerRow = 1 ; innerRow < testRows && row + innerRow < rows; innerRow++) {
+                string testString = grid[row + innerRow].substr(currentPosition);
+                //cout << "Query: " << testGrid[innerRow] << " Test String: [" << testString << "]" << endl;
+                if (regex_search(testString,innerMatches,testQueries[innerRow]) && innerMatches.position() == 0) {
+                    numberOfMatches++;
+                } else {
+                    break;
+                }
+            }
+            if (numberOfMatches == testRows) {
+               result = "YES";
+               break;
+            }
+            //matchPosition += matches.prefix().length() + testGrid[0].length();
+            matchPosition++;
+            //rowRemainder = matches.suffix().str();
+            rowRemainder = rowRemainder.substr(1);
+            //cout << "Row Remainder: [" << rowRemainder << "]" << endl;
         }
         if (result.compare("YES") == 0) {
             break;
         }
+        */
+
+             /*
+        for (const auto &fname : fnames) {
+        if (std::regex_match(fname, pieces_match, pieces_regex)) {
+            std::cout << fname << '\n';
+            for (size_t i = 0; i < pieces_match.size(); ++i) {
+                std::ssub_match sub_match = pieces_match[i];
+                std::string piece = sub_match.str();
+                std::cout << "  submatch " << i << ": " << piece << '\n';
+            }
+        }
+       } */
+       /*
+        regex testRegex ("(12)");
+        if(regex_match(rowRemainder,matches,testRegex)) {
+            cout << "iterating ..." << endl;
+            for (int match = 0; match < matches.size(); ++match) {
+                //std::ssub_match sub_match = pieces_match[i];
+                //td::string piece = sub_match.str();
+                //std::cout << "  submatch " << i << ": " << piece << '\n';
+                cout << "match ";
+            }
+            cout << endl;
+        }*/
+
+
+
     }
 
     cout << result << endl;
-
-    /*
-    // Find this character in the grid
-    for (int row = 0 ; row < rows ; row++) {
-      for (int column = 0; column < columns; column++) {
-        char currentCharacter = getCharacter(row,column,grid);
-        if (currentCharacter == testCharacter && compareGrid(grid,testGrid,row,column)) {
-          match = "YES";
-          break;
-        }
-      }
-
-      // If we have a match, we don't need to keep going
-      if (match.compare("YES") == 0) {
-        break;
-      }
-    }
-    cout << match << endl;
-    */
   }
+
+    const std::string s = "123412";
+    regex words_regex("12");
+    sregex_iterator words_begin = sregex_iterator(s.begin(), s.end(), words_regex);
+    sregex_iterator words_end = sregex_iterator();
+
+    std::cout << "Found "
+              << std::distance(words_begin, words_end)
+              << " words:\n";
+
+    for (sregex_iterator i = words_begin; i != words_end; ++i) {
+        smatch match = *i;
+        cout << match.position() << " " ;
+        string match_str = match.str();
+        cout << match_str << '\n';
+    }
+
+
   return 0;
 }
