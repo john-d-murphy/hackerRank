@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <regex>
 using namespace std;
 
 /*
@@ -125,128 +126,42 @@ int main() {
     int testRows;
     int testColumns;
     cin >> testRows >> testColumns;
-    vector<string> testGrid(testRows);
     vector<regex> testQueries(testRows);
     for(int j = 0; j < testRows; j++) {
       string row;
       cin >> row;
-      testGrid[j] = row;
-      testQueries[j] = (row);
-
+      // This will create a lookahead to make sure we can have
+      // overlapping matches. Example stackoverflow question:
+      // http://stackoverflow.com/a/20837608/2006429
+      testQueries[j] = ("(?="+row+").");
     }
 
-    // See if this matches any of the rows in the
-    // test grid
-     for(int row = 0; row < rows; row++) {
-        string rowText = grid[row];
-        int matchPosition = 0;
-        cout << rowText << endl;
-        sregex_iterator begin = sregex_iterator(rowText.begin(), rowText.end(), testQueries[0]);
-        for (sregex_iterator i = begin; i != end; ++i) {
-            int numberOfMatches = 1;
-            smatch match = *i;
-            //cout << match.position() << " " ;
-            string match_substr = rowText.substr(match.position());
-            string match_str = match.str();
-            //cout << match_substr << " " << match_str << '\n';
-            for (int innerRow = 1 ; innerRow < testRows && row + innerRow < rows; innerRow++) {
-                string testString = grid[row + innerRow].substr(match.position());
-                cout << "Query: " << testGrid[innerRow] << " Test String: [" << testString << "]" << endl;
-                if (regex_search(testString,innerMatches,testQueries[innerRow]) && innerMatches.position() == 0) {
-                    numberOfMatches++;
-                } else {
-                    break;
-                }
-            }
-            if (numberOfMatches == testRows) {
-               result = "YES";
-               break;
-            }
-        }
-
-        // Let's find all of the matches for this string
-
-        /*
-        while(regex_search(rowRemainder,matches,testQueries[0])) {
-
-            int numberOfMatches = 1;
-            int currentPosition = matchPosition + matches.prefix().length();
-            //cout << "Querying on: " << rowRemainder << endl;
-            //cout << "Current Position: " << currentPosition << endl;
-            // Now that we have a match, let's see if the next rows match.
-            // (We also don't want to go over the max number of rows, so we need to add that
-            // to the match criteria as well.)
-            for (int innerRow = 1 ; innerRow < testRows && row + innerRow < rows; innerRow++) {
-                string testString = grid[row + innerRow].substr(currentPosition);
-                //cout << "Query: " << testGrid[innerRow] << " Test String: [" << testString << "]" << endl;
-                if (regex_search(testString,innerMatches,testQueries[innerRow]) && innerMatches.position() == 0) {
-                    numberOfMatches++;
-                } else {
-                    break;
-                }
-            }
-            if (numberOfMatches == testRows) {
-               result = "YES";
-               break;
-            }
-            //matchPosition += matches.prefix().length() + testGrid[0].length();
-            matchPosition++;
-            //rowRemainder = matches.suffix().str();
-            rowRemainder = rowRemainder.substr(1);
-            //cout << "Row Remainder: [" << rowRemainder << "]" << endl;
-        }
-        if (result.compare("YES") == 0) {
+    for(int row = 0; row < rows; row++) {
+      string rowText = grid[row];
+      sregex_iterator begin = sregex_iterator(rowText.begin(), rowText.end(), testQueries[0]);
+      for (sregex_iterator i = begin; i != end; ++i) {
+        int numberOfMatches = 1;
+        smatch match = *i;
+        for (int innerRow = 1 ; innerRow < testRows && row + innerRow < rows; innerRow++) {
+          // Try to get a match at this row starting from the place where we had our
+          // previous match.
+          string testString = grid[row + innerRow].substr(match.position());
+          if (regex_search(testString,innerMatches,testQueries[innerRow]) && innerMatches.position() == 0) {
+            numberOfMatches++;
+          } else {
             break;
+          }
         }
-        */
-
-             /*
-        for (const auto &fname : fnames) {
-        if (std::regex_match(fname, pieces_match, pieces_regex)) {
-            std::cout << fname << '\n';
-            for (size_t i = 0; i < pieces_match.size(); ++i) {
-                std::ssub_match sub_match = pieces_match[i];
-                std::string piece = sub_match.str();
-                std::cout << "  submatch " << i << ": " << piece << '\n';
-            }
+        if (numberOfMatches == testRows) {
+          result = "YES";
+          break;
         }
-       } */
-       /*
-        regex testRegex ("(12)");
-        if(regex_match(rowRemainder,matches,testRegex)) {
-            cout << "iterating ..." << endl;
-            for (int match = 0; match < matches.size(); ++match) {
-                //std::ssub_match sub_match = pieces_match[i];
-                //td::string piece = sub_match.str();
-                //std::cout << "  submatch " << i << ": " << piece << '\n';
-                cout << "match ";
-            }
-            cout << endl;
-        }*/
-
-
-
+      }
+      if (result.compare("YES") == 0) {
+        break;
+      }
     }
-
     cout << result << endl;
   }
-
-    const std::string s = "123412";
-    regex words_regex("12");
-    sregex_iterator words_begin = sregex_iterator(s.begin(), s.end(), words_regex);
-    sregex_iterator words_end = sregex_iterator();
-
-    std::cout << "Found "
-              << std::distance(words_begin, words_end)
-              << " words:\n";
-
-    for (sregex_iterator i = words_begin; i != words_end; ++i) {
-        smatch match = *i;
-        cout << match.position() << " " ;
-        string match_str = match.str();
-        cout << match_str << '\n';
-    }
-
-
   return 0;
 }
