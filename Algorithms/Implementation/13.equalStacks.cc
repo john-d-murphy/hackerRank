@@ -102,6 +102,8 @@ int main(){
 
   // Find max height
   long maxHeight = 0;
+  long lastSum2 = 0;
+  long lastSum3 = 0;
 
   // Since we start from the largest item in the stack,
   // as soon as we find a value that's equal, we know
