@@ -67,6 +67,7 @@ int main() {
   int x2;
   int v2;
   cin >> x1 >> v1 >> x2 >> v2;
+  // 1 will never catch 2 if 2 is moving faster
   if (v2 >= v1) {
     cout << "NO";
   } else {
