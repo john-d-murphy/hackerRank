@@ -77,7 +77,10 @@ int main() {
     divisorCount[remainder]++;
   }
 
-  // Determine the max iterator for the :0
+  // Determine the max iterator for the comparison
+  // We do the k + 1 for the odd so we will cover all combinations.
+  // I.E. for k=5, we will iterate to 1 and 2, without the +1, we will just
+  // hit 1, leaving out some cases.
   int iteratorMax = ( k % 2 == 0) ? k / 2 : ( k + 1 ) / 2;
   for(int i = 1; i < iteratorMax; i++) {
     if (divisorCount[i] > divisorCount[k-i]) {
@@ -87,6 +90,7 @@ int main() {
     }
   }
 
+  // Special cases
   if (divisorCount[0] > 0) {
     setSize++;
   }
@@ -95,6 +99,7 @@ int main() {
     setSize++;
   }
 
+  // Output results
   cout << setSize << endl;
 
   return 0;
