@@ -126,3 +126,4 @@
 # 03 occurs once
 # aa is repeated thrice
 #
+uniq -c | awk '{print $1" "$2" "$3}'
