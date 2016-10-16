@@ -27,7 +27,7 @@ The first line contains a single string, a.
 The second line contains a single string, b.
 
 Constraints
-	
+  
 * 1 <= |a|,|b| <= 10^4
 
 * It is guaranteed that and consist of lowercase English alphabetic letters (i.e., a through z).
@@ -48,48 +48,49 @@ Sample Output
 */
 
 public class Solution {
-    public static int numberNeeded(String first, String second) {
-		/* Explanation - we're guaranteed to have a-z, so we don't
-		 * need to use a hashmap. We can just have an array of 
-		 * size 26, each letter representing a number. 
-		 *
-		 * We iterate through each of the strings, and count the 
-		 * number of times each letter appears.
-		 *
-		 * To find the number of letters we need to make an anagram
-		 * we just need to find the differences between each bucket.
-		 * 
-		 * We may be able to do this in one bucket, but this is efficient
-		 * and clear. 
-		 */
-
-        int offset        = (int) 'a';
-        int firstArray[]  = new int[26];h
-        int secondArray[] = new int[26];
-        int numberNeeded  = 0;
-        
-        for (char value : first.toCharArray()) {
-            int characterValue = (int) value - offset;
-            firstArray[characterValue]++;
-        }
-        
-        for (char value : second.toCharArray()) {
-            int characterValue = (int) value - offset;
-            secondArray[characterValue]++;
-        }
-        
-        for (int i = 0 ; i < 26; i++) {
-            numberNeeded += Math.abs(firstArray[i] - secondArray[i]);
-        }
-        
-        return numberNeeded;
-    }
   
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        String a = in.next();
-        String b = in.next();
-        System.out.println(numberNeeded(a, b));
+  public static int numberNeeded(String first, String second) {
+    /* Explanation - we're guaranteed to have a-z, so we don't
+     * need to use a hashmap. We can just have an array of 
+     * size 26, each letter representing a number. 
+     *
+     * We iterate through each of the strings, and count the 
+     * number of times each letter appears.
+     *
+     * To find the number of letters we need to make an anagram
+     * we just need to find the differences between each bucket.
+     * 
+     * We may be able to do this in one bucket, but this is efficient
+     * and clear. 
+     */
+
+    int offset        = (int) 'a';
+    int firstArray[]  = new int[26];h
+    int secondArray[] = new int[26];
+    int numberNeeded  = 0;
+
+    for (char value : first.toCharArray()) {
+      int characterValue = (int) value - offset;
+      firstArray[characterValue]++;
     }
+
+    for (char value : second.toCharArray()) {
+      int characterValue = (int) value - offset;
+      secondArray[characterValue]++;
+    }
+
+    for (int i = 0 ; i < 26; i++) {
+      numberNeeded += Math.abs(firstArray[i] - secondArray[i]);
+    }
+
+    return numberNeeded;
+  }
+
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);
+    String a = in.next();
+    String b = in.next();
+    System.out.println(numberNeeded(a, b));
+  }
 }
 
