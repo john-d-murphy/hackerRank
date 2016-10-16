@@ -49,8 +49,22 @@ Sample Output
 
 public class Solution {
     public static int numberNeeded(String first, String second) {
+		/* Explanation - we're guaranteed to have a-z, so we don't
+		 * need to use a hashmap. We can just have an array of 
+		 * size 26, each letter representing a number. 
+		 *
+		 * We iterate through each of the strings, and count the 
+		 * number of times each letter appears.
+		 *
+		 * To find the number of letters we need to make an anagram
+		 * we just need to find the differences between each bucket.
+		 * 
+		 * We may be able to do this in one bucket, but this is efficient
+		 * and clear. 
+		 */
+
         int offset        = (int) 'a';
-        int firstArray[]  = new int[26];
+        int firstArray[]  = new int[26];h
         int secondArray[] = new int[26];
         int numberNeeded  = 0;
         
