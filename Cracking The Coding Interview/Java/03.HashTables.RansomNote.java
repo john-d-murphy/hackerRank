@@ -38,64 +38,64 @@ Yes
 */
 
 public class Solution {
-    Map<String, Integer> magazineMap;
-    Map<String, Integer> noteMap;
-    
-    public Solution(String magazine, String note) { 
-		Collection<String> magazineStrings = Arrays.asList(magazine.split(" "));
-		Collection<String> noteStrings = Arrays.asList(note.split(" "));
-		magazineMap = new HashMap<String,Integer>();
-        noteMap = new HashMap<String,Integer>();
+  Map<String, Integer> magazineMap;
+  Map<String, Integer> noteMap;
 
-		// For the purposes of an interview question, we can leave this a bit
-		// unoptomized. Ideally, we'd put the duplicate code into a function.
+  public Solution(String magazine, String note) { 
+    Collection<String> magazineStrings = Arrays.asList(magazine.split(" "));
+    Collection<String> noteStrings = Arrays.asList(note.split(" "));
+    magazineMap = new HashMap<String,Integer>();
+    noteMap = new HashMap<String,Integer>();
 
-		for(String value : magazineStrings) {
-			if (magazineMap.get(value) == null) {
-				magazineMap.put(value, 0);	
-			}
-			Integer currentValue = magazineMap.get(value);
-			currentValue++;
-			magazineMap.put(value,currentValue);
-		}
-		
-		for(String value : noteStrings) {
-			if (noteMap.get(value) == null) {
-				noteMap.put(value, 0);	
-			}
-			Integer currentValue = noteMap.get(value);
-			currentValue++;
-			noteMap.put(value,currentValue);
-		}
-    }
-    
-    public boolean solve() {
-		for(String ransomWord : noteMap.keySet()) {
-			Integer ransomValue   = noteMap.get(ransomWord);
-			Integer magazineValue = magazineMap.get(ransomWord);
+    // For the purposes of an interview question, we can leave this a bit
+    // unoptomized. Ideally, we'd put the duplicate code into a function.
 
-			if (magazineValue == null || ransomValue > magazineValue) {
-				return false;	
-			}
-		}
-		return true;
+    for(String value : magazineStrings) {
+      if (magazineMap.get(value) == null) {
+        magazineMap.put(value, 0);  
+      }
+      Integer currentValue = magazineMap.get(value);
+      currentValue++;
+      magazineMap.put(value,currentValue);
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int m = scanner.nextInt();
-        int n = scanner.nextInt();
-        
-        // Eat whitespace to beginning of next line
-        scanner.nextLine();
-        
-        Solution s = new Solution(scanner.nextLine(), scanner.nextLine());
-        scanner.close();
-        
-        boolean answer = s.solve();
-        if(answer)
-            System.out.println("Yes");
-        else System.out.println("No");
-      
+    for(String value : noteStrings) {
+      if (noteMap.get(value) == null) {
+        noteMap.put(value, 0);  
+      }
+      Integer currentValue = noteMap.get(value);
+      currentValue++;
+      noteMap.put(value,currentValue);
     }
+  }
+
+  public boolean solve() {
+    for(String ransomWord : noteMap.keySet()) {
+      Integer ransomValue   = noteMap.get(ransomWord);
+      Integer magazineValue = magazineMap.get(ransomWord);
+
+      if (magazineValue == null || ransomValue > magazineValue) {
+        return false;  
+      }
+    }
+    return true;
+  }
+
+  public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+    int m = scanner.nextInt();
+    int n = scanner.nextInt();
+
+    // Eat whitespace to beginning of next line
+    scanner.nextLine();
+
+    Solution s = new Solution(scanner.nextLine(), scanner.nextLine());
+    scanner.close();
+
+    boolean answer = s.solve();
+    if(answer)
+      System.out.println("Yes");
+    else System.out.println("No");
+
+  }
 }
