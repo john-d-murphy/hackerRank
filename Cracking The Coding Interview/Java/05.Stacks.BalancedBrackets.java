@@ -42,9 +42,7 @@ public class Solution {
 
   public static boolean isBalanced(String expression) {
 
-
     Stack<Character> openBrackets = new Stack<Character>();
-
 
     for( Character c : expression.toCharArray()) {
       if (isOpen(c)) {
