@@ -50,7 +50,6 @@ public class Solution {
       } else if(openBrackets.isEmpty()) {
         return false;
       } else {
-
         Character open = openBrackets.pop();
 
         if (!isPair(open,c)) {
