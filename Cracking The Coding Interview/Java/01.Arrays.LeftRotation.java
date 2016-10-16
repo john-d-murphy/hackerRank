@@ -44,8 +44,8 @@ public class Solution {
 		// Figure out number of rotations actually needed by modding
 		// the value - we can only have max n-1 rotations.
 		int actualRotations = k % n;
-		int newArray[] 		= new int[n];
-		int currentIndex 	= 0;
+		int newArray[]      = new int[n];
+		int currentIndex    = 0;
 
 		for (int i = actualRotations ; i < n ; i++ )
 		{
