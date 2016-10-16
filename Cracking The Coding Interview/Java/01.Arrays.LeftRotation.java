@@ -47,14 +47,12 @@ public class Solution {
 		int newArray[]      = new int[n];
 		int currentIndex    = 0;
 
-		for (int i = actualRotations ; i < n ; i++ )
-		{
+		for (int i = actualRotations ; i < n ; i++ ) {
 			newArray[currentIndex] = a[i];
 			currentIndex++;
 		}
 
-		for (int i = 0; i < actualRotations; i++ )
-		{
+		for (int i = 0; i < actualRotations; i++ ) {
 			newArray[currentIndex] = a[i];
 			currentIndex++;
 		}
