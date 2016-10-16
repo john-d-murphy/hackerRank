@@ -96,6 +96,5 @@ public class Solution {
     if(answer)
       System.out.println("Yes");
     else System.out.println("No");
-
   }
 }
