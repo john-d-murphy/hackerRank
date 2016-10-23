@@ -70,7 +70,7 @@ public class Solution {
       Integer value = Integer.valueOf(in.nextInt());
       double median = -1;
 
-      // insert
+      // insert - alternate to keep balance
       if (a_i % 2 == 0) {
         maxSortedSet.add(value);
       } else {
