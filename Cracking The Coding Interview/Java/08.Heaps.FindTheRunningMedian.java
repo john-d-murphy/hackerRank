@@ -43,7 +43,6 @@ public class Solution {
 
   // Comparators to create our min/max heaps
   private static Comparator<Integer> minComparator = new Comparator<Integer>() {
-
     @Override
     public int compare(Integer first, Integer second) {
       return first.compareTo(second);
@@ -51,7 +50,6 @@ public class Solution {
   };
 
   private static Comparator<Integer> maxComparator = new Comparator<Integer>() {
-
     @Override
     public int compare(Integer first, Integer second) {
       return second.compareTo(first);
@@ -65,13 +63,13 @@ public class Solution {
     Scanner in = new Scanner(System.in);
     ArrayList<Integer> foundValues;
     int n = in.nextInt();
-    int a[] = new int[n];
-    for(int a_i=1; a_i <= n; a_i++){
+
+    for(int currentIndex=1; currentIndex <= n; currentIndex++){
       Integer value = Integer.valueOf(in.nextInt());
       double median = -1;
 
       // insert - alternate to keep balance
-      if (a_i % 2 == 0) {
+      if (currentIndex % 2 == 0) {
         maxSortedSet.add(value);
       } else {
         minSortedSet.add(value);
@@ -88,9 +86,9 @@ public class Solution {
       }
 
       // get median
-      if (a_i == 1) {
+      if (currentIndex == 1) {
         median = value;
-      }else if (a_i % 2 != 0) {
+      }else if (currentIndex % 2 != 0) {
         median = minSortedSet.first();
       } else {
         double sum = (minSortedSet.first() + maxSortedSet.first());
