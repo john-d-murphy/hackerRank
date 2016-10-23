@@ -37,75 +37,68 @@ double-precision number scaled to decimal place (e.g., 1.2 format).
 
 public class Solution {
 
-  private static class Node {
-    public int value;
-    public Node next;
+  // The idea is that we create two heaps - a minimum and a maximum heap.
+  // Our median is therefore going to be either the head of the minimum heap
+  // or (minimum.first() + maximum.first())/2.0;
 
-    Node(int value) {
-      this.value = value;
-      next = null;
+  // Comparators to create our min/max heaps
+  private static Comparator<Integer> minComparator = new Comparator<Integer>() {
+
+    @Override
+    public int compare(Integer first, Integer second) {
+      return first.compareTo(second);
     }
-  }
+  };
 
-  private static Node listInsert(Node toInsert, Node root) {
-    if (root == null) {
-      return toInsert;
-    } else if (toInsert.value < root.value) {
-      toInsert.next = root;
-      return toInsert;
-    } else {
-      root.next = listInsert(toInsert, root.next);
-      return root;
+  private static Comparator<Integer> maxComparator = new Comparator<Integer>() {
+
+    @Override
+    public int compare(Integer first, Integer second) {
+      return second.compareTo(first);
     }
-  }
+  };
 
-  private static double getMedian(int index, boolean getNext, Node root) {
-    Node tempNode = root;
-    double median;
-    //System.out.printf("Index: %s - Get Next: %s\n", index, getNext, root);
-
-    for( int i = 0 ; i < index; i++) {
-      tempNode = tempNode.next;
-    }
-
-    if (getNext) {
-      median = (tempNode.value + tempNode.next.value)/2.0;
-    }
-    else {
-      median = tempNode.value;
-    }
-    return median;
-
-  }
-
-  private static void printList(Node root) {
-    Node tempRoot = root;
-    System.out.printf("List: ");
-    while( tempRoot != null) {
-      System.out.printf("%d ", tempRoot.value);
-      tempRoot = tempRoot.next;
-    }
-    System.out.printf("\n");
-  }
-
+  private static TreeSet<Integer> minSortedSet = new TreeSet<>(minComparator);
+  private static TreeSet<Integer> maxSortedSet = new TreeSet<>(maxComparator);
 
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
+    ArrayList<Integer> foundValues;
     int n = in.nextInt();
-    Node list = null;
-    for(int count=0; count < n; count++){
-      int value = in.nextInt();
-      Node newNode = new Node(value);
-      list = listInsert(newNode, list);
-      //printList(list);
-      int index = count / 2;
-      boolean getNext = count % 2 == 1;
-      //System.out.printf("Median Index: %d\n", index);
-      //System.out.printf("Get Next: %s\n", getNext);
-      double median = getMedian( index, getNext, list);
-      //System.out.printf("Median: %.2f\n##############\n", median);
-      System.out.printf("%.1f\n", median);
+    int a[] = new int[n];
+    for(int a_i=1; a_i <= n; a_i++){
+      Integer value = Integer.valueOf(in.nextInt());
+      double median = -1;
+
+      // insert
+      if (a_i % 2 == 0) {
+        maxSortedSet.add(value);
+      } else {
+        minSortedSet.add(value);
+      }
+
+      // swap elements if out of order
+      if (minSortedSet.size() > 0 && maxSortedSet.size() > 0) {
+        if (minSortedSet.first() < maxSortedSet.first()) {
+          Integer maxSortedValue = maxSortedSet.pollFirst();
+          Integer minSortedValue = minSortedSet.pollFirst();
+          minSortedSet.add(maxSortedValue);
+          maxSortedSet.add(minSortedValue);
+        }
+      }
+
+      // get median
+      if (a_i == 1) {
+        median = value;
+      }else if (a_i % 2 != 0) {
+        median = minSortedSet.first();
+      } else {
+        double sum = (minSortedSet.first() + maxSortedSet.first());
+        median = sum/2.0;
+      }
+
+      // print median
+      System.out.printf("%.1f\n",median);
     }
   }
 }
-
