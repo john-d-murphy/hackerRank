@@ -88,7 +88,7 @@ public class Solution {
       // get median
       if (currentIndex == 1) {
         median = value;
-      }else if (currentIndex % 2 != 0) {
+      } else if (currentIndex % 2 != 0) {
         median = minSortedSet.first();
       } else {
         double sum = (minSortedSet.first() + maxSortedSet.first());
