@@ -77,6 +77,8 @@ public class Solution {
       }
 
       // swap end elements if out of order
+      // This makes it so we only need to do one operation after the sorted
+      // insert instead of traversing the list.
       if (minSortedQueue.size() > 0 && maxSortedQueue.size() > 0) {
         if (minSortedQueue.peek() < maxSortedQueue.peek()) {
           Integer maxSortedValue = maxSortedQueue.poll();
@@ -86,7 +88,7 @@ public class Solution {
         }
       }
 
-      // get median
+      // get median using the definition in the problem set
       if (currentIndex == 1) {
         median = value;
       } else if (currentIndex % 2 != 0) {
