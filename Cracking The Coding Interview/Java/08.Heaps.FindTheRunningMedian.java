@@ -42,6 +42,7 @@ public class Solution {
   // or (minimum.first() + maximum.first())/2.0;
 
   // Comparators to create our min/max heaps
+
   private static Comparator<Integer> minComparator = new Comparator<Integer>() {
     @Override
     public int compare(Integer first, Integer second) {
@@ -56,8 +57,8 @@ public class Solution {
     }
   };
 
-  private static TreeSet<Integer> minSortedSet = new TreeSet<>(minComparator);
-  private static TreeSet<Integer> maxSortedSet = new TreeSet<>(maxComparator);
+  private static PriorityQueue<Integer> minSortedQueue = new PriorityQueue<Integer>(100,minComparator);
+  private static PriorityQueue<Integer> maxSortedQueue = new PriorityQueue<Integer>(100,maxComparator);
 
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
@@ -68,20 +69,20 @@ public class Solution {
       Integer value = Integer.valueOf(in.nextInt());
       double median = -1;
 
-      // insert - alternate to keep balance
+      // alternate insert to keep tree balanced
       if (currentIndex % 2 == 0) {
-        maxSortedSet.add(value);
+        maxSortedQueue.add(value);
       } else {
-        minSortedSet.add(value);
+        minSortedQueue.add(value);
       }
 
-      // swap elements if out of order
-      if (minSortedSet.size() > 0 && maxSortedSet.size() > 0) {
-        if (minSortedSet.first() < maxSortedSet.first()) {
-          Integer maxSortedValue = maxSortedSet.pollFirst();
-          Integer minSortedValue = minSortedSet.pollFirst();
-          minSortedSet.add(maxSortedValue);
-          maxSortedSet.add(minSortedValue);
+      // swap end elements if out of order
+      if (minSortedQueue.size() > 0 && maxSortedQueue.size() > 0) {
+        if (minSortedQueue.peek() < maxSortedQueue.peek()) {
+          Integer maxSortedValue = maxSortedQueue.poll();
+          Integer minSortedValue = minSortedQueue.poll();
+          minSortedQueue.add(maxSortedValue);
+          maxSortedQueue.add(minSortedValue);
         }
       }
 
@@ -89,14 +90,15 @@ public class Solution {
       if (currentIndex == 1) {
         median = value;
       } else if (currentIndex % 2 != 0) {
-        median = minSortedSet.first();
+        median = minSortedQueue.peek();
       } else {
-        double sum = (minSortedSet.first() + maxSortedSet.first());
+        double sum = (minSortedQueue.peek() + maxSortedQueue.peek());
         median = sum/2.0;
       }
 
-      // print median
-      System.out.printf("%.1f\n",median);
+      System.out.printf("%.1f\n", median);
     }
   }
+}
+
 }
