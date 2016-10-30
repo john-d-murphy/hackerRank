@@ -91,6 +91,12 @@ public class Solution {
       if (right[rightIndex] < left[leftIndex]) {
         result[currentIndex] = right[rightIndex];
         // calculate offset of current number - this is the number of inversions, not the swap count.
+        // Not intuitive, but essentially, by inserting from the right array into the index at this
+        // point, you're displacing everything in the left array. Since both
+        // sides are sorted since we're in merge sort, this means that the
+        // remaining items in the left array will be displaced. So we add them
+        // all up, and this gives us the displaced count.
+
         globalSwapCount += left.length - leftIndex;
         rightIndex++;
       } else {
