@@ -134,24 +134,22 @@ public class Solution {
 
       Arrays.sort(flavors);
 
-      /*
-         for (int i = 0; i < flavors.length; i++) {
-         System.out.printf("%d %s\n", i, flavors[i].toString());
-         }*/
-
       for(int i = 0; i < n - 1 ; i++) {
 
         int search = m - flavors[i].flavorCost;
-        //System.out.printf("Current Flavor: %s - Remaining Money: %d\n", flavors[i], search);
+
         if(search >= flavors[i].flavorCost) {
-          int startIndex = i + 1;
-          int endIndex = n - 1;
-          //System.out.printf("Start Index: %d End Index: %d\n", startIndex, endIndex);
-          int index = binarySearch( startIndex, endIndex, flavors, search);
-          //System.out.printf("Binary Search Found: %d\n", index);
-          if (index != -1) {
+          int startLocation = i + 1;
+          int endLocation   = n - 1;
+          int foundLocation = binarySearch( startLocation, endLocation, flavors, search);
+
+          if (foundLocation != -1) {
             int searchIndex = flavors[i].index;
-            int foundIndex = flavors[index].index;
+            int foundIndex = flavors[foundLocation].index;
+
+            // Requirement indicates that we need to print the lowest index
+            // first
+
             if (searchIndex < foundIndex) {
               System.out.printf("%d %d\n", searchIndex, foundIndex);
             } else {
@@ -162,9 +160,6 @@ public class Solution {
         }
 
       }
-      //System.out.printf("#####\n");
     }
-
   }
-
 }
