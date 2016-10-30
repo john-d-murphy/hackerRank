@@ -93,8 +93,24 @@ class IceCream implements Comparable{
 public class Solution {
 
   public static int binarySearch(int first, int last, IceCream[] arr, int search) {
-    return -1;
 
+    int searchIndex = (first+last)/2;
+
+    if (first > last ) {
+      return -1;
+    } else if (arr[searchIndex].flavorCost == search) {
+      return searchIndex;
+    } else {
+
+      int searchLeft = binarySearch(first, searchIndex -1, arr, search);
+      if (searchLeft != -1) {
+        return searchLeft;
+      }
+      int searchRight = binarySearch(searchIndex + 1, last, arr, search);
+
+      return searchRight;
+
+    }
   }
 
   public static void main(String[] args) {
@@ -118,25 +134,35 @@ public class Solution {
 
       Arrays.sort(flavors);
 
-      for (int i = 0; i < flavors.length; i++) {
-        System.out.printf("%d %s\n", i, flavors[i].toString());
-      }
-
-      System.out.printf("#####\n");
-
       /*
-         int firstIndex = 100000, secondIndex = 100000;
-         for(int i = 0; i < n - 1 ; i++) {
-         int search = m - arr[i].flavor;
-         if(search >= arr[i].flavor) {
-         int index = binarySearch( i + 1, n - 1, arr, search);
-         if( index != -1 ) {
-         System.out.println( Math.min(arr[i].index, index) + " " + Math.max(arr[i].index, index));
-         break;
-         }
-         }
-         } */
+         for (int i = 0; i < flavors.length; i++) {
+         System.out.printf("%d %s\n", i, flavors[i].toString());
+         }*/
 
+      for(int i = 0; i < n - 1 ; i++) {
+
+        int search = m - flavors[i].flavorCost;
+        //System.out.printf("Current Flavor: %s - Remaining Money: %d\n", flavors[i], search);
+        if(search >= flavors[i].flavorCost) {
+          int startIndex = i + 1;
+          int endIndex = n - 1;
+          //System.out.printf("Start Index: %d End Index: %d\n", startIndex, endIndex);
+          int index = binarySearch( startIndex, endIndex, flavors, search);
+          //System.out.printf("Binary Search Found: %d\n", index);
+          if (index != -1) {
+            int searchIndex = flavors[i].index;
+            int foundIndex = flavors[index].index;
+            if (searchIndex < foundIndex) {
+              System.out.printf("%d %d\n", searchIndex, foundIndex);
+            } else {
+              System.out.printf("%d %d\n", foundIndex, searchIndex);
+            }
+            break;
+          }
+        }
+
+      }
+      //System.out.printf("#####\n");
     }
 
   }
