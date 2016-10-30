@@ -36,17 +36,24 @@ For each of the d datasets, print the number of inversions that must be swapped 
 
 */
 
+// Note that this isn't asking for the number of swaps that need to be done for
+// a merge sort, but rather the count of inverted numbers within the list.
+// You can use the merge sort *idea*, but if mergesort is implemented, the
+// count will necessarily be significantly lower than the number of inversions
+// since the algorithm is efficient
+
 public class Solution {
 
   static long globalSwapCount;
 
   public static int[] mergeSort(int arr[]){
-    //System.out.printf("Array to Sort: ");
-    //printArray(arr);
-    //System.out.printf("\n");
+    System.out.printf("Array to Sort: ");
+    printArray(arr);
+    System.out.printf("\n");
 
     // If the array is empty or of size 1, we're sorted
     if (arr.length == 0 || arr.length == 1) {
+      System.out.printf("Recursive Case - finished sorting\n");
       return arr;
     }
 
@@ -67,29 +74,31 @@ public class Solution {
     }
 
     // Sort the lists
-    //System.out.printf("Sorting Left:  ");
-    //printArray(leftSide);
-    //System.out.printf("\n");
+    System.out.printf("Sorting Left:  ");
+    printArray(leftSide);
+    System.out.printf("\n");
     leftSide = mergeSort(leftSide);
 
-    //System.out.printf("Sorted Left:  ");
-    //printArray(leftSide);
-    //System.out.printf("\n");
+    System.out.printf("Sorted Left:   ");
+    printArray(leftSide);
+    System.out.printf("\n");
 
-    //System.out.printf("Sorting Right: ");
-    //printArray(rightSide);
-    //System.out.printf("\n");
+    System.out.printf("Sorting Right: ");
+    printArray(rightSide);
+    System.out.printf("\n");
     rightSide = mergeSort(rightSide);
 
-    //System.out.printf("Sorted Right: ");
-    //printArray(rightSide);
-    //System.out.printf("\n");
+    System.out.printf("Sorted Right:  ");
+    printArray(rightSide);
+    System.out.printf("\n");
 
     // Merge them together
+    System.out.printf("Merging lists: ");
+    printArray(leftSide); System.out.printf(" "); printArray(rightSide); System.out.printf("\n");
     int result[] = merge(leftSide, rightSide);
-    //System.out.printf("Sorted Array: ");
-    //printArray(result);
-    //System.out.printf("\n###################\n");
+    System.out.printf("Sorted Array:  ");
+    printArray(result);
+    System.out.printf("\nCurrent Swap Count: %d\n###################\n",globalSwapCount);
     return result;
   }
 
@@ -98,46 +107,24 @@ public class Solution {
     int currentIndex = 0;
     int leftIndex = 0;
     int rightIndex = 0;
-    int lastSwap = 0;
 
-    //System.out.printf("Left Array:   ");
-    //printArray(left);
-    //System.out.printf("\n");
-
-    //System.out.printf("Right Array:  ");
-    //printArray(right);
-    //System.out.printf("\n");
-
+    // Sort beginning of list
     while (leftIndex < left.length && rightIndex < right.length) {
-      //System.out.printf("- Comparing %d to %d\n", left[leftIndex], right[rightIndex]);
-      if (left[leftIndex] <= right[rightIndex]) {
-        result[currentIndex] = left[leftIndex];
-        //if (lastSwap == 1) {
-        //    System.out.printf("Incrementing global count\n");
-        //    globalSwapCount++;
-        //}
-        lastSwap = -1;
-        leftIndex++;
-      } else {
+      System.out.printf("Current Sorted List: "); printArray(result); System.out.printf("\n");
+      System.out.printf("Comparing: %d to %d - ", left[leftIndex], right[rightIndex]);
+
+      if (right[rightIndex] < left[leftIndex]) {
+        System.out.printf("Swap\n");
         result[currentIndex] = right[rightIndex];
         rightIndex++;
-        //if (lastSwap == -1) {
-        //   System.out.printf("Incrementing global count\n");
         globalSwapCount++;
-        //}
-        lastSwap = 1;
+      } else {
+        System.out.printf("No Swap\n");
+        result[currentIndex] = left[leftIndex];
+        leftIndex++;
       }
       currentIndex++;
     }
-
-    //System.out.printf("Left Index at: %d - Right Index at: %d\nRemaining Left:", leftIndex, rightIndex);
-    //printArrayFromIndex(left, leftIndex);
-    //System.out.printf(" Remaining Right:");
-    //printArrayFromIndex(right, rightIndex);
-
-    //System.out.printf(" Current Sorted List: ");
-    //printArray(result);
-    //System.out.printf("\n");
 
     while (leftIndex < left.length) {
       result[currentIndex] = left[leftIndex];
@@ -150,7 +137,6 @@ public class Solution {
       rightIndex++;
       currentIndex++;
     }
-
 
     return result;
   }
@@ -180,15 +166,19 @@ public class Solution {
       globalSwapCount = 0;
       int n = in.nextInt();
       int arr[] = new int[n];
+      int unsorted[] = new int[n];
       for(int arr_i=0; arr_i < n; arr_i++){
-        arr[arr_i] = in.nextInt();
+        int nextInt = in.nextInt();
+        arr[arr_i] = nextInt;
+        unsorted[arr_i] = nextInt;
       }
-      mergeSort(arr);
-      //System.out.printf("Swap Count: %s\n", globalSwapCount);
-      //System.out.printf("##################\n");
-      System.out.printf("%s\n", globalSwapCount);
+      arr = mergeSort(arr);
+      printArray(arr);System.out.printf("\n");printArray(unsorted);
+      System.out.printf("\nSwap Count: %s\n", globalSwapCount);
+      System.out.printf("##################\n\n\n\n");
+      //System.out.printf("\n%s\n", globalSwapCount);
     }
   }
-
-
 }
+
+
