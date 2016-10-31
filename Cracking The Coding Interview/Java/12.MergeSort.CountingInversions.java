@@ -128,11 +128,9 @@ public class Solution {
       globalSwapCount = 0;
       int n = in.nextInt();
       int arr[] = new int[n];
-      int unsorted[] = new int[n];
       for(int arr_i=0; arr_i < n; arr_i++){
         int nextInt = in.nextInt();
         arr[arr_i] = nextInt;
-        unsorted[arr_i] = nextInt;
       }
       arr = mergeSort(arr);
       System.out.printf("%s\n", globalSwapCount);
