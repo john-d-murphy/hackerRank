@@ -100,7 +100,6 @@ public class Solution {
         globalSwapCount += left.length - leftIndex;
         rightIndex++;
       } else {
-        //System.out.printf("No Swap\n");
         result[currentIndex] = left[leftIndex];
         leftIndex++;
       }
