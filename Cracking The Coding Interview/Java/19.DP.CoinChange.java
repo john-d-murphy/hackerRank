@@ -74,19 +74,49 @@ For n=10  and C={2,5,3,6} there are five solutions:
 
 public class Solution {
 
-  public static long makeChange(int[] coins, int money) {
+  public static Map<Integer,Long> changeCount;
 
+  public static long makeChange(int[] coins, int money, int recursionLevel) {
+    String recursionTab = new String();
+    for (int i = 0; i < recursionLevel; i++) {
+      recursionTab += "| | ";
+    }
+    System.out.printf("%sCurrent Money: %d\n", recursionTab,money);
+    if (money == 0) {
+      System.out.printf("%sFound 0 - Returning 1\n", recursionTab);
+      return 1;
+    } else if(money < 0) {
+      System.out.printf("%sFound < 0 - Returning 0\n", recursionTab);
+      return 0;
+    } else if (changeCount.get(money) != null) {
+      System.out.printf("%dFound Combination at %d - Returning %d\n", recursionTab, money, changeCount.get(money));
+      return changeCount.get(money);
+    } else {
+      long totalCombinations = 0;
+      for( int i = 0; i < coins.length; i++) {
+        System.out.printf("%sStarting %d\n", recursionTab, coins[i]);
+        int moneyToCheck = money - coins[i];
+        totalCombinations += makeChange(coins,moneyToCheck, recursionLevel + 1);
+        System.out.printf("%sFinished %d - Leaves %d - Current Combinations: %d\n", recursionTab,coins[i], moneyToCheck, totalCombinations);
+      }
+      System.out.printf("%s### Storing %d for %d\n", recursionTab, totalCombinations, money);
+      changeCount.put(money,totalCombinations);
+      return totalCombinations;
+    }
   }
 
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
+    changeCount = new HashMap<Integer,Long>();
     int n = in.nextInt();
     int m = in.nextInt();
     int coins[] = new int[m];
     for(int coins_i=0; coins_i < m; coins_i++){
       coins[coins_i] = in.nextInt();
     }
-    System.out.println(makeChange(coins, n));
+    Arrays.sort(coins);
+    System.out.printf("Expecting to make change for %d\n", n);
+    System.out.println(makeChange(coins, n,0));
   }
 }
 
