@@ -46,17 +46,19 @@ public class Solution {
 
   private static Map<Integer,Integer> staircaseCount;
 
-  private static int countSteps(int numberOfStairs, int recursionLevel) {
+  private static int countSteps(int numberOfStairs) {
 
     if (staircaseCount.get(numberOfStairs) != null) {
       return staircaseCount.get(numberOfStairs);
-    } else if (numberOfStairs <= 0) {
+    } else if (numberOfStairs == 0) {
+      return 1;
+    } else if (numberOfStairs < 0) {
       return 0;
     } else {
       int currentCount = 0;
-      currentCount += countSteps(numberOfStairs-3, recursionLevel + 1);
-      currentCount += countSteps(numberOfStairs-2, recursionLevel + 1);
-      currentCount += countSteps(numberOfStairs-1, recursionLevel + 1);
+      currentCount += countSteps(numberOfStairs-3);
+      currentCount += countSteps(numberOfStairs-2);
+      currentCount += countSteps(numberOfStairs-1);
 
       staircaseCount.put(numberOfStairs,currentCount);
       return currentCount;
@@ -65,15 +67,11 @@ public class Solution {
 
   public static void main(String[] args) {
     staircaseCount = new HashMap<Integer,Integer>();
-    staircaseCount.put(0,0);
-    staircaseCount.put(1,1);
-    staircaseCount.put(2,2);
-    staircaseCount.put(3,4);
     Scanner in = new Scanner(System.in);
     int s = in.nextInt();
     for(int a0 = 0; a0 < s; a0++){
       int n = in.nextInt();
-      int staircaseCount = countSteps(n,0);
+      int staircaseCount = countSteps(n);
       System.out.printf("%d\n", staircaseCount);
     }
   }
