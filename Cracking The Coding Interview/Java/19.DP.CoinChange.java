@@ -76,30 +76,37 @@ public class Solution {
 
   public static Map<Integer,Long> changeCount;
 
-  public static long makeChange(int[] coins, int money, int recursionLevel) {
+  public static long makeChange(int[] coins, int money, int recursionLevel, int startIndex, String currentCombination) {
     String recursionTab = new String();
+
     for (int i = 0; i < recursionLevel; i++) {
       recursionTab += "| | ";
     }
-    System.out.printf("%sCurrent Money: %d\n", recursionTab,money);
+    //System.out.printf("%sCurrent Combination: {%s }\n", recursionTab, currentCombination);
+
+    //System.out.printf("%sCurrent Money: %d\n", recursionTab,money);
     if (money == 0) {
-      System.out.printf("%sFound 0 - Returning 1\n", recursionTab);
+        //System.out.printf("%sFound 0 - Returning 1 - current Combination: {%s }\n", recursionTab, currentCombination);
+
       return 1;
     } else if(money < 0) {
-      System.out.printf("%sFound < 0 - Returning 0\n", recursionTab);
+        //System.out.printf("%sFound < 0 - Returning 0\n", recursionTab);
       return 0;
+
+    /*
     } else if (changeCount.get(money) != null) {
-      System.out.printf("%dFound Combination at %d - Returning %d\n", recursionTab, money, changeCount.get(money));
+      System.out.printf("%sFound Combination at %d - Returning %d\n", recursionTab, money, changeCount.get(money));
       return changeCount.get(money);
+    */
     } else {
       long totalCombinations = 0;
-      for( int i = 0; i < coins.length; i++) {
-        System.out.printf("%sStarting %d\n", recursionTab, coins[i]);
+      for( int i = startIndex; i < coins.length; i++) {
+        //System.out.printf("%sStarting %d\n", recursionTab, coins[i]);
         int moneyToCheck = money - coins[i];
-        totalCombinations += makeChange(coins,moneyToCheck, recursionLevel + 1);
-        System.out.printf("%sFinished %d - Leaves %d - Current Combinations: %d\n", recursionTab,coins[i], moneyToCheck, totalCombinations);
+        totalCombinations += makeChange(coins,moneyToCheck, recursionLevel + 1, i, currentCombination + " " + coins[i]);
+        //System.out.printf("%sFinished %d - Leaves %d - Current Combinations: %d\n", recursionTab,coins[i], moneyToCheck, totalCombinations);
       }
-      System.out.printf("%s### Storing %d for %d\n", recursionTab, totalCombinations, money);
+      //System.out.printf("%s### Storing %d for %d ###\n", recursionTab, totalCombinations, money);
       changeCount.put(money,totalCombinations);
       return totalCombinations;
     }
@@ -115,8 +122,8 @@ public class Solution {
       coins[coins_i] = in.nextInt();
     }
     Arrays.sort(coins);
-    System.out.printf("Expecting to make change for %d\n", n);
-    System.out.println(makeChange(coins, n,0));
+    //System.out.printf("Expecting to make change for %d\n", n);
+    System.out.println(makeChange(coins, n, 0, 0, ""));
   }
 }
 
