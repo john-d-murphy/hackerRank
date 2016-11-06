@@ -48,16 +48,9 @@ public class Solution {
 
   private static int countSteps(int numberOfStairs, int recursionLevel) {
 
-    String recursionTab = new String();
-
-    for (int i = 0 ; i < recursionLevel; i++) {
-      recursionTab += "  ";
-    }
-
     if (staircaseCount.get(numberOfStairs) != null) {
       return staircaseCount.get(numberOfStairs);
     } else if (numberOfStairs <= 0) {
-      System.out.printf("%sInvalid stair count - returning 0\n", recursionTab);
       return 0;
     } else {
       int currentCount = 0;
