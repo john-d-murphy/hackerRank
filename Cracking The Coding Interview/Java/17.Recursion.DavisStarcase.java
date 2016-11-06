@@ -42,7 +42,6 @@ Sample Output
 44
 */
 
-
 public class Solution {
 
   private static Map<Integer,Integer> staircaseCount;
@@ -55,47 +54,35 @@ public class Solution {
       recursionTab += "  ";
     }
 
-
-
-    System.out.printf("%sCalculating Combinations for: %d\n", recursionTab, numberOfStairs);
     if (staircaseCount.get(numberOfStairs) != null) {
-      System.out.printf("%sCached Value Found: %d\n", recursionTab,staircaseCount.get(numberOfStairs));
       return staircaseCount.get(numberOfStairs);
-    } else if (numberOfStairs < 0) {
+    } else if (numberOfStairs <= 0) {
       System.out.printf("%sInvalid stair count - returning 0\n", recursionTab);
       return 0;
     } else {
-      int currentCount = 1;
-      System.out.printf("%sRecursing into %d\n", recursionTab, numberOfStairs - 3);
+      int currentCount = 0;
       currentCount += countSteps(numberOfStairs-3, recursionLevel + 1);
-      System.out.printf("%sCurrent Count for %d: %d\n", recursionTab, numberOfStairs, currentCount);
-
-      System.out.printf("%sRecursing into %d\n", recursionTab, numberOfStairs - 2);
       currentCount += countSteps(numberOfStairs-2, recursionLevel + 1);
-      System.out.printf("%sCurrent Count for %d: %d\n", recursionTab, numberOfStairs,currentCount);
-
-      System.out.printf("%sRecursing into %d\n", recursionTab, numberOfStairs - 1);
       currentCount += countSteps(numberOfStairs-1, recursionLevel + 1);
-      System.out.printf("%sCurrent Count for %d: %d\n", recursionTab, numberOfStairs, currentCount);
 
       staircaseCount.put(numberOfStairs,currentCount);
-      System.out.printf("%sCalculated for %d: %d\n", recursionTab, numberOfStairs, currentCount);
       return currentCount;
     }
   }
-
-
 
   public static void main(String[] args) {
     staircaseCount = new HashMap<Integer,Integer>();
     staircaseCount.put(0,0);
     staircaseCount.put(1,1);
+    staircaseCount.put(2,2);
+    staircaseCount.put(3,4);
     Scanner in = new Scanner(System.in);
     int s = in.nextInt();
     for(int a0 = 0; a0 < s; a0++){
       int n = in.nextInt();
       int staircaseCount = countSteps(n,0);
-      System.out.printf("%d\n#############\n", staircaseCount);
+      System.out.printf("%d\n", staircaseCount);
     }
   }
 }
+
