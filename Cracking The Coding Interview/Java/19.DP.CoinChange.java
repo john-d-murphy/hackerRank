@@ -101,12 +101,16 @@ public class Solution {
     } else {
       long totalCombinations = 0;
       for( int i = startIndex; i < coins.length; i++) {
-        //System.out.printf("%sStarting %d\n", recursionTab, coins[i]);
         int moneyToCheck = money - coins[i];
-        totalCombinations += makeChange(coins,moneyToCheck, recursionLevel + 1, i, currentCombination + " " + coins[i]);
-        //System.out.printf("%sFinished %d - Leaves %d - Current Combinations: %d\n", recursionTab,coins[i], moneyToCheck, totalCombinations);
-      }
-      //System.out.printf("%s### Storing %d for %d ###\n", recursionTab, totalCombinations, money);
+        if (coins[i] <= moneyToCheck || moneyToCheck == 0) {
+        //System.out.printf("%sStarting %d - Money to Check: %d - Coins: %d\n", recursionTab, coins[i], moneyToCheck, coins[startIndex]);
+            totalCombinations += makeChange(coins,moneyToCheck, recursionLevel + 1, i, currentCombination + " " + coins[i]);
+            //System.out.printf("%sFinished %d - Leaves %d - Current Combinations: %d\n", recursionTab,coins[i], moneyToCheck, totalCombinations);
+        } else {
+            //System.out.printf("%sSkipping %d- Should have already found combination - Money to Check: %d - Coins: %d\n", recursionTab, coins[i], moneyToCheck, coins[startIndex] );
+        }
+       }
+      //System.out.printf("%s### For money amount %d there are %d possible combinations ###\n", recursionTab, totalCombinations, money);
       changeCount.put(money,totalCombinations);
       return totalCombinations;
     }
@@ -122,8 +126,11 @@ public class Solution {
       coins[coins_i] = in.nextInt();
     }
     Arrays.sort(coins);
+    for (int i = 0; i < coins.length; i++) {
+        System.out.printf("%d ", coins[i]);
+    }
     //System.out.printf("Expecting to make change for %d\n", n);
-    System.out.println(makeChange(coins, n, 0, 0, ""));
+    //System.out.println(makeChange(coins, n, 0, 0, ""));
   }
 }
 
