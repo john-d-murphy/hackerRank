@@ -48,18 +48,18 @@ The first two terms of the sequence are t1=0 and t2=1, which gives us a modified
 
 public class Solution {
 
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		BigInteger firstTerm = BigInteger.valueOf(in.nextInt());
-		BigInteger secondTerm = BigInteger.valueOf(in.nextInt());
-		int term = in.nextInt();
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);
+    BigInteger firstTerm = BigInteger.valueOf(in.nextInt());
+    BigInteger secondTerm = BigInteger.valueOf(in.nextInt());
+    int term = in.nextInt();
 
-		for(int i = 2; i < term; i++) {
-			BigInteger tempTerm = firstTerm.add(secondTerm.multiply(secondTerm));
-			firstTerm = secondTerm;
-			secondTerm = tempTerm;
-		}
+    for(int i = 2; i < term; i++) {
+      BigInteger tempTerm = firstTerm.add(secondTerm.multiply(secondTerm));
+      firstTerm = secondTerm;
+      secondTerm = tempTerm;
+    }
 
-		System.out.printf("%s", secondTerm.toString());
-	}
+    System.out.printf("%s", secondTerm.toString());
+  }
 }
