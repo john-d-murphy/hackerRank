@@ -74,51 +74,51 @@ For n=10  and C={2,5,3,6} there are five solutions:
 
 public class Solution {
 
-  public static Map<Integer,Long> changeCount;
+  public static Map<String, Boolean> seen;
 
-  public static long makeChange(int[] coins, int money, int recursionLevel, int startIndex, String currentCombination) {
-    String recursionTab = new String();
+  public static long makeChange(int[] coins, int money, String currentCombination) {
 
-    for (int i = 0; i < recursionLevel; i++) {
-      recursionTab += "| | ";
-    }
-    //System.out.printf("%sCurrent Combination: {%s }\n", recursionTab, currentCombination);
-
-    //System.out.printf("%sCurrent Money: %d\n", recursionTab,money);
-    if (money == 0) {
-        //System.out.printf("%sFound 0 - Returning 1 - current Combination: {%s }\n", recursionTab, currentCombination);
-
+    if (Boolean.TRUE.equals(seen.get(currentCombination))) {
+      //System.out.printf("Already Seen %s - returning 0\n", currentCombination);
+      return 0;
+    }else if (money == 0) {
+      //System.out.printf("####### Found Combination: %s\n", currentCombination);
       return 1;
     } else if(money < 0) {
-        //System.out.printf("%sFound < 0 - Returning 0\n", recursionTab);
       return 0;
-
-    /*
-    } else if (changeCount.get(money) != null) {
-      System.out.printf("%sFound Combination at %d - Returning %d\n", recursionTab, money, changeCount.get(money));
-      return changeCount.get(money);
-    */
     } else {
       long totalCombinations = 0;
-      for( int i = startIndex; i < coins.length; i++) {
+      for( int i = 0; i < coins.length; i++) {
         int moneyToCheck = money - coins[i];
-        if (coins[i] <= moneyToCheck || moneyToCheck == 0) {
-        //System.out.printf("%sStarting %d - Money to Check: %d - Coins: %d\n", recursionTab, coins[i], moneyToCheck, coins[startIndex]);
-            totalCombinations += makeChange(coins,moneyToCheck, recursionLevel + 1, i, currentCombination + " " + coins[i]);
-            //System.out.printf("%sFinished %d - Leaves %d - Current Combinations: %d\n", recursionTab,coins[i], moneyToCheck, totalCombinations);
-        } else {
-            //System.out.printf("%sSkipping %d- Should have already found combination - Money to Check: %d - Coins: %d\n", recursionTab, coins[i], moneyToCheck, coins[startIndex] );
+        String localCombination = currentCombination + coins[i];
+        char unsorted[] = localCombination.toCharArray();
+        Arrays.sort(unsorted);
+        localCombination = "";
+        for(int j = unsorted.length - 1; j >= 0; j--) {
+          localCombination += unsorted[j];
         }
-       }
-      //System.out.printf("%s### For money amount %d there are %d possible combinations ###\n", recursionTab, totalCombinations, money);
-      changeCount.put(money,totalCombinations);
+        //localCombination = new String(unsorted);
+
+        //System.out.printf("Remaining: %d - Current Combination: %s\n", moneyToCheck, localCombination);
+
+        if (moneyToCheck < 0) {
+          //System.out.printf("Invalid Combination - remaining will be invalid. Breaking.\n");
+          break;
+        } else {
+          totalCombinations += makeChange(coins,moneyToCheck, localCombination);
+        }
+
+        seen.put(localCombination,true);
+
+      }
+
       return totalCombinations;
     }
   }
 
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
-    changeCount = new HashMap<Integer,Long>();
+    seen = new HashMap<String,Boolean>();
     int n = in.nextInt();
     int m = in.nextInt();
     int coins[] = new int[m];
@@ -126,11 +126,7 @@ public class Solution {
       coins[coins_i] = in.nextInt();
     }
     Arrays.sort(coins);
-    for (int i = 0; i < coins.length; i++) {
-        System.out.printf("%d ", coins[i]);
-    }
-    //System.out.printf("Expecting to make change for %d\n", n);
-    //System.out.println(makeChange(coins, n, 0, 0, ""));
+
+    System.out.println(makeChange(coins, n, ""));
   }
 }
-
