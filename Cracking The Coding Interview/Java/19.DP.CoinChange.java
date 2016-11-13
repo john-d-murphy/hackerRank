@@ -71,61 +71,33 @@ For n=10  and C={2,5,3,6} there are five solutions:
 4. {2,3,5}
 5. {5,5}
 */
-
 public class Solution {
-
-  public static Map<List<Integer>, Long> changeCount;
-
-  public static long makeChange(int[] coins, int money, List<Integer> currentCombination) {
-
-    System.out.printf("Current Combination: %s\n", currentCombination);
-
-    if (money == 0) {
-      System.out.printf("#### Valid Combination:%s\n", currentCombination);
-      return 1;
-    } else if (changeCount.containsKey(currentCombination)) {
-      return changeCount.get(currentCombination);
-    } else {
-      long combinations = 0;
-      for( int i = 0; i < coins.length; i++) {
-        int moneyToCheck = money - coins[i];
-        List<Integer> newCombination = new ArrayList<Integer>(currentCombination);
-        newCombination.set(i, newCombination.get(i) + 1);
-        if (moneyToCheck < 0) {
-          break;
-        } else if (changeCount.containsKey(newCombination)) {
-          System.out.printf("Already seen: %s\n", newCombination);
-        } else {
-          Long combinationChange = makeChange(coins, moneyToCheck, newCombination);
-          combinations += combinationChange;
-          changeCount.put(newCombination, combinationChange);
-        }
-      }
-      return combinations;
-    }
-
-
-  }
 
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
-    changeCount = new HashMap<List<Integer>,Long>();
-    List<Integer> currentCombination = new ArrayList<>();
-    int n = in.nextInt();
-    int m = in.nextInt();
-    int coins[] = new int[m];
-    for(int coins_i=0; coins_i < m; coins_i++){
+    int money = in.nextInt();
+    int numberOfCoins = in.nextInt();
+    int coins[] = new int[numberOfCoins];
+    for(int coins_i=0; coins_i < numberOfCoins; coins_i++){
       coins[coins_i] = in.nextInt();
-      currentCombination.add(0);
     }
 
     Arrays.sort(coins);
     long totalCombinations = 0;
 
-    for(int i = 0; i < coins.length; i++) {
-      System.out.printf("Expecting to make change for %d\n", coins[i]);
-      totalCombinations += makeChange(coins, coins[i], currentCombination);
+    long combinations[] = new long[money+1];
+    combinations[0] = 1;
+
+    for( int i = 0; i < coins.length ; i++) {
+      int coin = coins[i];
+
+      for( int j = coin; j <= money; j++ ) {
+        combinations[j] += combinations[j-coin];
+      }
     }
-    System.out.println(totalCombinations);
+
+    System.out.println(combinations[money]);
+
   }
 }
+
