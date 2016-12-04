@@ -34,7 +34,7 @@ Sample Output 0
 
 1
 Explanation 0
-The array only contains a single , so we print  as our answer.
+The array only contains a single 1, so we print 1 as our answer.
 
 Sample Input 1
 
@@ -44,7 +44,7 @@ Sample Output 1
 
 2
 Explanation 1
-We have two 's and one . We print , because that's the only unique element in the array.
+We have two 's and one 1. We print 2, because that's the only unique element in the array.
 
 Sample Input 2
 
