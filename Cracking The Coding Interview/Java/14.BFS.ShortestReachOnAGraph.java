@@ -58,33 +58,33 @@ The first region has five cells and the second region has one cell.
 Because we want to print the number of cells in the largest region of the matrix, we print 5.
 */
 
- class Point {
-        public final int i;
-        public final int j;
-        public boolean visited;
+class Point {
+  public final int i;
+  public final int j;
+  public boolean visited;
 
-        public Point(int i, int j) {
-            this.i = i;
-            this.j = j;
-            visited = false;
+  public Point(int i, int j) {
+    this.i = i;
+    this.j = j;
+    visited = false;
+  }
+
+  public boolean connected(Point compare) {
+    for (int i_a = -1; i_a <= 1; i_a++) {
+      for(int j_a = -1; j_a <= 1; j_a++) {
+        if( i + i_a == compare.i && j + j_a == compare.j) {
+          return true;
         }
-
-        public boolean connected(Point compare) {
-            for (int i_a = -1; i_a <= 1; i_a++) {
-                for(int j_a = -1; j_a <= 1; j_a++) {
-                    if( i + i_a == compare.i && j + j_a == compare.j) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public String toString() {
-            return i + "," + j;
-        }
-
+      }
     }
+    return false;
+  }
+
+  public String toString() {
+    return i + "," + j;
+  }
+
+}
 
 public class Solution {
 
