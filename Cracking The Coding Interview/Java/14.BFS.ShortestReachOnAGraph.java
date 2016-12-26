@@ -5,125 +5,104 @@ import java.math.*;
 import java.util.regex.*;
 
 /*
-Consider a matrix with n rows and m columns, where each cell contains either a 0 or a 1 and any cell containing a 1 is
-called a filled cell. Two cells are said to be *connected* if they are adjacent to each other horizontally, vertically,
-or diagonally; in other words, cell[i][j] is connected to cells [i-1][j-1],[i-1][j],[i-1][j+1],[i][j-1],[i][j+1],
-[i+1][j-1],[i+1][j], and [i+1][j+1], provided that the location exists in the matrix for that [i][j].
+Consider an undirected graph consisting of n nodes where each node is labeled from 1 to n and the edge between any two
+nodes is always of length 6. We define node s to be the starting position for a BFS.
 
-If one or more filled cells are also connected, they form a region.
-Note that each cell in a region is connected to at least one other cell in the region but is not necessarily directly
-connected to all the other cells in the region.
-
-Task
-Given an nxm matrix, find and print the number of cells in the largest region in the matrix.
-Note that there may be more than one region in the matrix.
+Given q queries in the form of a graph and some starting node,s, perform each query by calculating the shortest
+distance from starting node s to all the other nodes in the graph. Then print a single line of n-1 space-separated
+integers listing node 's shortest distance to each of the n - 1 other nodes (ordered sequentially by node number);
+if s is disconnected from a node, print -1 as the distance to that node.
 
 Input Format
 
-The first line contains an integer,n, denoting the number of rows in the matrix.
-The second line contains an integer,m, denoting the number of columns in the matrix.
-Each line i of the n subsequent lines contains m space-separated integers describing the respective values
-filling each row in the matrix.
+The first line contains an integer,q, denoting the number of queries.
+The subsequent lines describe each query in the following format:
+
+The first line contains two space-separated integers describing the respective values of n (the number of nodes) and
+m (the number of edges) in the graph.
+
+Each line i of the m subsequent lines contains two space-separated integers, u and v, describing an edge connecting
+node u to node v.
+
+The last line contains a single integer,s, denoting the index of the starting node.
 
 Constraints
 
-0 < n,m < 10
+* 1 <= q <= 10
+* 2 <= n <= 1000
+* 1 <= m <= n * (n-1)/2
+* 1 <= u,v,s <= n
 
 Output Format
 
-Print the number of cells in the largest region in the given matrix.
+For each of the q queries, print a single line of n-1 space-separated integers denoting the shortest distances to
+each of the n-1 other nodes from starting position s. These distances should be listed sequentially by node number
+(i.e. 1,2,n), but should not include node s. If some node is unreachable from s, print -1 as the distance to that node.
 
 Sample Input
+2
+4 2
+1 2
+1 3
+1
+3 1
+2 3
+2
 
-4
-4
-1 1 0 0
-0 1 1 0
-0 0 1 0
-1 0 0 0
 Sample Output
-
-5
-
-Explanation
-The diagram below depicts two regions of the matrix;
-for each region, the component cells forming the region are marked with an X:
-
-X X 0 0     1 1 0 0
-0 X X 0     0 1 1 0
-0 0 X 0     0 0 1 0
-1 0 0 0     X 0 0 0
-
-The first region has five cells and the second region has one cell.
-Because we want to print the number of cells in the largest region of the matrix, we print 5.
+6 6 -1
+-1 6
 */
 
-class Point {
-  public final int i;
-  public final int j;
-  public boolean visited;
 
-  public Point(int i, int j) {
-    this.i = i;
-    this.j = j;
-    visited = false;
-  }
+public class Solution  {
+  public satic class Graph {
+    public Graph(int size) {
 
-  public boolean connected(Point compare) {
-    for (int i_a = -1; i_a <= 1; i_a++) {
-      for(int j_a = -1; j_a <= 1; j_a++) {
-        if( i + i_a == compare.i && j + j_a == compare.j) {
-          return true;
-        }
-      }
+
     }
-    return false;
-  }
 
-  public String toString() {
-    return i + "," + j;
-  }
-
-}
-
-public class Solution {
-
-  public static int getPathLength(Collection<Point> points, Point startPoint) {
-    startPoint.visited = true;
-    int pathLength = 1;
-    for(Point point : points ) {
-      if (!point.visited && startPoint.connected(point)) {
-        pathLength += getPathLength(points, point);
-      }
+    public void addEdge(int first, int second) {
     }
-    return pathLength;
-  }
 
+    //0 indexed
+    public int[] shortestReach(int startId) {
+    }
+  }
 
   public static void main(String[] args) {
-    Scanner in = new Scanner(System.in);
-    int n = in.nextInt();
-    int m = in.nextInt();
-    Collection<Point> points = new ArrayList<Point>();
-    int maxLength = 0;
-    for(int grid_i=0; grid_i < n; grid_i++){
-      for(int grid_j=0; grid_j < m; grid_j++){
-        if (in.nextInt() != 0) {
-          Point point = new Point(grid_i, grid_j);
-          points.add(point);
+    Scanner scanner = new Scanner(System.in);
+
+    int queries = scanner.nextInt();
+
+    for (int t = 0; t < queries; t++){
+      //Create a graph of size n where each edge weight is 6
+      Graph graph  =  new Graph(scanner.nextInt());
+      int m = scanner.nextInt();
+
+      // read and set edges
+      for( int i = 0; i < m; i++) {
+        int u = scanner.nextInt();
+        int v = Scanner.nextInt();
+
+        // add each edge to the graph
+        graph.addEdge(u,v);
+      }
+
+      // Find shortest reach from node s
+      int startId = scanner.nextInt();
+      int[] distances = graph.shortestReach(startId);
+
+      for( int i = 0; i < distances.length ; i++){
+        if( i != startId) {
+          System.out.println(distances[i]);
+          System.out.print(" ");
         }
       }
-    }
 
-    for (Point point : points) {
-      if (!point.visited) {
-        int length = getPathLength(points,point);
-        if (length > maxLength) {
-          maxLength = length;
-        }
-      }
-    }
+      System.out.println();
 
-    System.out.printf("%d\n", maxLength);
+    }
+    Scanner.close();
   }
 }
