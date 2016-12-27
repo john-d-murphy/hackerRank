@@ -13,7 +13,9 @@ You have to complete the Node* RemoveDuplicates(Node* head) method which takes o
 the head of the sorted linked list. You should NOT read any input from stdin/console.
 
 Output Format
-Delete as few nodes as possible to ensure that no two nodes have the same data. Adjust the next pointers to ensure that the remaining nodes form a single sorted linked list. Then return the head of the sorted updated linked list. Do NOT print anything to stdout/console.
+Delete as few nodes as possible to ensure that no two nodes have the same data.
+Adjust the next pointers to ensure that the remaining nodes form a single sorted linked list.
+Then return the head of the sorted updated linked list. Do NOT print anything to stdout/console.
 
 Sample Input
 
