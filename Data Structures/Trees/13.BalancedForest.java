@@ -59,6 +59,11 @@ Sample Output
 */
 
 
+
+// This is a great problem, but I'm short on time.
+// Need to work on the other datastructure problems first.
+
+
 public class Solution {
 
 	public static class Node {
