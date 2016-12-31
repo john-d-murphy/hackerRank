@@ -1,0 +1,15 @@
+You are provided a matrix A =
+
+       [-2     -9 ]
+       [ 1      4 ]
+The 1000th power of A, i.e. A^1000 =
+
+        [A  B]
+        [C  D]
+
+In the text box below, enter the integers A-D each on a new line, respectively.
+Do not leave any leading or trailing spaces.
+
+----
+
+Need to go back to this

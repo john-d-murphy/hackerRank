@@ -1,0 +1,14 @@
+Matrix Multiplication
+
+Two matrices of size 2x2 are multiplied as shown below. Find the integers A-D in the resultant matrix.
+
+[1  2 ]   x     [4  5 ]      [A  B]
+[2  3 ]         [7  8 ]   =  [C  D]
+
+In the text box below, enter each of the four integers A-D on a new line.
+
+Solution:
+18
+21
+29
+34
