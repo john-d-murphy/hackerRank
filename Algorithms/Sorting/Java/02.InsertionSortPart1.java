@@ -60,7 +60,6 @@ Arr - an array with the value e in the right-most cell.
 
 class Solution {
 
-
 	public static void insertIntoSorted(int[] ar) {
 		int lastEntry = ar.length -1;
 		int value = ar[lastEntry];
