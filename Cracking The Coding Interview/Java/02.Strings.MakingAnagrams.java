@@ -65,7 +65,7 @@ public class Solution {
      */
 
     int offset        = (int) 'a';
-    int firstArray[]  = new int[26];h
+    int firstArray[]  = new int[26];
     int secondArray[] = new int[26];
     int numberNeeded  = 0;
 
